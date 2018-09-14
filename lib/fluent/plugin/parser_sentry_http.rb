@@ -1,11 +1,12 @@
+require 'fluent/plugin/parser'
 require 'base64'
 require 'zlib'
 require 'oj'
 
-module Fluent
+module Fluent::Plugin
   class TextParser
     class SentryHttpParser < Parser
-      Plugin.register_parser('sentry_http', self)
+      Fluent::Plugin.register_parser('sentry_http', self)
 
       config_param :json_parse, :bool, :default => true
       config_param :field_name, :string, :default => 'message'
@@ -23,7 +24,7 @@ module Fluent
         record = Oj.load(message, :mode => :compat)
 
         record_time = record['timestamp']
-        time = record_time.nil? ? Engine.now : Time.parse(record_time).to_i
+        time = record_time.nil? ? Fluent::Engine.now : Time.parse(record_time).to_i
 
         record = {@field_name => message} unless @json_parse
 

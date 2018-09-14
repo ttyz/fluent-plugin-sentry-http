@@ -1,8 +1,8 @@
 require 'fluent/plugin/in_http'
 
-module Fluent
+module Fluent::Plugin
   class SentryHttpInput < HttpInput
-    Plugin.register_input('sentry_http', self)
+    Fluent::Plugin.register_input('sentry_http', self)
 
     config_param :format, :string, :default => 'sentry_http'
 
